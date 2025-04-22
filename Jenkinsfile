@@ -28,14 +28,14 @@ pipeline{
         stage ("Run Backend Tests"){
             steps{
                 dir("${BACKEND_DIR}"){
-                    sh 'npm test' || echo "No Tests found as of now"
+                    sh 'npm test || echo "No Tests found as of now"'
                 }
             }
         }
         stage("Run Frontend Tests"){
             steps{
                 dir("${FRONTEND_DIR}"){
-                    sh 'npm test' || echo "No Tests found as of now"
+                    sh 'npm test || echo "No Tests found as of now"'
                 }
             }
         }
@@ -48,7 +48,7 @@ pipeline{
         }
         stage ("Deploy to Docker"){
             steps{
-                sh 'docker compose up -d' || echo "Docker compose failed"
+                sh 'docker compose up -d || echo "Docker compose failed"'
             }
         }
     }
