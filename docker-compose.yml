@@ -1,0 +1,43 @@
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - e-commerce
+  
+  backend:
+    build:
+      context: ./backend
+    container_name: ecommerce-backend-container
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env 
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/ecommerce
+    depends_on:
+      - mongodb 
+    networks:
+      - e-commerce
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ecommerce-frontend-container
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - e-commerce
+
+volumes:
+  mongodb_data:
+    
+networks:
+  e-commerce:
+    driver: bridge
